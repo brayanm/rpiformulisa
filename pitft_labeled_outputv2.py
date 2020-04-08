@@ -14,11 +14,23 @@ import keyboard  # using module keyboard
 from scipy.spatial import distance as dist
 from collections import OrderedDict 
 from operator import getitem 
+import mysql.connector
+from mysql.connector import errorcode
+import datetime   
 
 MODEL_FILENAME_face = 'includes/model_face.tflite'
 LABELS_FILENAME_face = 'includes/labels_face.txt'
 MODEL_FILENAME_cars = 'includes/model_cars.tflite'
 LABELS_FILENAME_cars = 'includes/labels_cars.txt'
+
+# Obtain connection string information from the portal
+config = {
+  'host':'mysqlformulisa.mysql.database.azure.com',
+  'user':'bmiranda@mysqlformulisa',
+  'password':'formulisa..,2019',
+  'database':'rpiformulisa'
+}
+
 
 CONFIDENCE_THRESHOLD = 0.5   # at what confidence level do we say we detected a thing
 PERSISTANCE_THRESHOLD = 0.25  # what percentage of the time we have to have seen a thing
@@ -79,6 +91,22 @@ last_spoken = None
 
 def main(args, opt, model, smallfont, medfont, bigfont, centroid_base, id_key, ct_frame):
     global last_spoken
+    temp_new_cars = 0
+    
+    if opt == 3:
+        # Construct connection string
+        try:
+           conn = mysql.connector.connect(**config)
+           print("Conexion establecida a Base de datos")
+        except mysql.connector.Error as err:
+          if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            print("Ocurrio un error con el user name or password")
+          elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            print("Base de datos no existe")
+          else:
+            print(err)
+        else:
+          cursor = conn.cursor()
     
     while not capture_manager.stopped:
         if capture_manager.frame is None:
@@ -165,10 +193,25 @@ def main(args, opt, model, smallfont, medfont, bigfont, centroid_base, id_key, c
                         centroid_base[p_id]['cx'] = p_info['cx']
                         centroid_base[p_id]['cy'] = p_info['cy']
                         centroid_base[p_id]['q'] = ct_frame
+            new_cars = len(centroid_base) - temp_new_cars
+            if new_cars>0:
+                temp_new_cars = len(centroid_base)
+                print('cantidad autos nuevos: '+str(new_cars))
+                # Insert quantity new cars and date
+                try:
+                    cursor.execute("INSERT INTO carsformulisa (quantity, date) VALUES (%s, %s);", (new_cars, datetime.datetime.now()))
+                    print("Inserted",cursor.rowcount,"row(s) of data.")  
+                except mysql.connector.Error:
+                    conn = mysql.connector.connect(**config)
+                    print("Conexion establecida a Base de datos")
+                    cursor = conn.cursor()
+                    cursor.execute("INSERT INTO carsformulisa (quantity, date) VALUES (%s, %s);", (new_cars, datetime.datetime.now()))
+                    print("Inserted",cursor.rowcount,"row(s) of data.")  
             print(centroid_base)
             print('cantidad autos: '+str(len(centroid_base)))  
             print('ct_frama: '+str(ct_frame))
-            ct_frame = ct_frame + 1          
+            ct_frame = ct_frame + 1       
+            conn.commit()   
 
         else:
             for p in prediction:
