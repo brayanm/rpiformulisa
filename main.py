@@ -278,6 +278,7 @@ def main(args, opt, model, smallfont, medfont, bigfont, centroid_base, id_key, c
         pygame.display.update()
      
 def insert_text(input_text, opt):
+    smallfont = pygame.font.Font(None, 24)
     if opt==1:
         fpstext_surface = smallfont.render(input_text, True, (255, 255, 255))
         fpstext_position = (screen.get_width()//2,screen.get_height()//2) 
