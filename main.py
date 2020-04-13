@@ -292,6 +292,15 @@ def run_process():
     t_load_model = "Cargando modelos en memoria, por favor espere..."
 
     pygame.mouse.set_visible(False)
+    screen.fill((0,0,0))
+    try:
+        splash = pygame.image.load(os.path.dirname(sys.argv[0])+'/bchatsplash.bmp')
+        screen.blit(splash, ((screen.get_width() / 2) - (splash.get_width() / 2),
+                    (screen.get_height() / 2) - (splash.get_height() / 2)))
+    except pygame.error:
+        pass
+    pygame.display.update()
+    
     screen.fill(black)
     insert_text(t_load_model, 1)
 
