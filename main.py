@@ -14,7 +14,10 @@ import keyboard
 import RPi.GPIO as GPIO
 import mysql.connector
 from mysql.connector import errorcode
-import datetime 
+import datetime
+from scipy.spatial import distance as dist
+from collections import OrderedDict 
+from operator import getitem 
 
 GPIO.setmode(GPIO.BCM)
 
