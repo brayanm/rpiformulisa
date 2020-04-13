@@ -290,6 +290,9 @@ def insert_text(input_text, opt):
         
 def run_process():
     t_load_model = "Cargando modelos en memoria, por favor espere..."
+    centroid_base = {}
+    id_key = 1
+    ct_frame = 0
 
     pygame.mouse.set_visible(False)
     screen.fill((0,0,0))
