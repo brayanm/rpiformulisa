@@ -303,6 +303,7 @@ def run_process():
     
     screen.fill(black)
     insert_text(t_load_model, 1)
+    pygame.display.update()
 
     # use the default font
     smallfont = pygame.font.Font(None, 24)
@@ -325,9 +326,9 @@ def run_process():
     capture_manager.start()
     
     t_menu = "Seleccione Opción:\n 17: Detección de caras\n 22: Detección de Objetos\n 23: Conteo de Autos\n 27: Volver al Menu\n"
-    pygame.display.update()
     screen.fill(black)
     insert_text(t_menu, 1)
+    pygame.display.update()
 
     while True:  # making a loop
         new_27 = GPIO.input(27)
@@ -336,29 +337,29 @@ def run_process():
         new_17 = GPIO.input(17)
         if not(new_27) and old_27 == 1:
             t_menu = "Seleccione Opción:\n 17: Detección de caras\n 22: Detección de Objetos\n 23: Conteo de Autos\n 27: Volver al Menu\n"
-            pygame.display.update()
             screen.fill(black)
             insert_text(t_menu, 1)
+            pygame.display.update()
             time.sleep(0.1)
         if not(new_23) and old_23 == 1:
             t_model = "Iniciando Modelo Detección de Autos, por favor espere!"
-            pygame.display.update()
             screen.fill(black)
             insert_text(t_model, 1)
+            pygame.display.update()
             main(args, 3, cars_model, smallfont, medfont, bigfont, centroid_base, id_key, ct_frame)
             time.sleep(0.1)
         if not(new_22) and old_22 == 1:
             t_model = "Iniciando Modelo Detección de Objetos, por favor espere!"
-            pygame.display.update()
             screen.fill(black)
             insert_text(t_model, 1)
+            pygame.display.update()
             main(args, 2, model, smallfont, medfont, bigfont, centroid_base, id_key, ct_frame)
             time.sleep(0.1)
         if not(new_17) and old_17 == 1:
             t_model = "Iniciando Modelo Detección de Caras, por favor espere!"
-            pygame.display.update()
             screen.fill(black)
             insert_text(t_model, 1)
+            pygame.display.update()
             main(args, 1, face_model, smallfont, medfont, bigfont, centroid_base, id_key, ct_frame)
             time.sleep(0.1)
         old_27 = new_27
