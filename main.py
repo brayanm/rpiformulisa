@@ -291,24 +291,35 @@ def insert_text(input_text, opt):
         fpstext_position = (screen.get_width()//2, screen.get_height()//3) 
         screen.blit(fpstext_surface, fpstext_surface.get_rect(center=fpstext_position))     
         
+def blit_text(surface, text, pos, font, color=pygame.Color('white')):
+    words = [word.split(' ') for word in text.splitlines()]  # 2D array where each row is a list of words.
+    space = font.size(' ')[0]  # The width of a space.
+    max_width, max_height = surface.get_size()
+    x, y = pos
+    for line in words:
+        for word in line:
+            word_surface = font.render(word, 0, color)
+            word_width, word_height = word_surface.get_size()
+            if x + word_width >= max_width:
+                x = pos[0]  # Reset the x.
+                y += word_height  # Start on new row.
+            surface.blit(word_surface, (x, y))
+            x += word_width + space
+        x = pos[0]  # Reset the x.
+        y += word_height  # Start on new row.
+        
 def run_process():
-    t_load_model = "Cargando modelos en memoria, por favor espere..."
+    t_load_model = "Cargando modelos en memoria,\npor favor espere..."
     centroid_base = {}
     id_key = 1
     ct_frame = 0
+    font = pygame.font.SysFont('Arial', 24)
 
     pygame.mouse.set_visible(False)
-    screen.fill((0,0,0))
-    try:
-        splash = pygame.image.load(os.path.dirname(sys.argv[0])+'/bchatsplash.bmp')
-        screen.blit(splash, ((screen.get_width() / 2) - (splash.get_width() / 2),
-                    (screen.get_height() / 2) - (splash.get_height() / 2)))
-    except pygame.error:
-        pass
-    pygame.display.update()
     
     screen.fill(black)
-    insert_text(t_load_model, 1)
+    #insert_text(t_load_model, 1)
+    blit_text(screen, t_load_model, (20, 20), font)
     pygame.display.update()
 
     # use the default font
@@ -333,7 +344,8 @@ def run_process():
     
     t_menu = "Seleccione Opción:\n 17: Detección de caras\n 22: Detección de Objetos\n 23: Conteo de Autos\n 27: Volver al Menu\n"
     screen.fill(black)
-    insert_text(t_menu, 1)
+    #insert_text(t_menu, 1)
+    blit_text(screen, t_menu, (20, 20), font)
     pygame.display.update()
 
     while True:  # making a loop
@@ -344,27 +356,31 @@ def run_process():
         if not(new_27) and old_27 == 1:
             t_menu = "Seleccione Opción:\n 17: Detección de caras\n 22: Detección de Objetos\n 23: Conteo de Autos\n 27: Volver al Menu\n"
             screen.fill(black)
-            insert_text(t_menu, 1)
+            #insert_text(t_menu, 1)
+            blit_text(screen, t_menu, (20, 20), font)
             pygame.display.update()
             time.sleep(0.1)
         if not(new_23) and old_23 == 1:
             t_model = "Iniciando Modelo Detección de Autos, por favor espere!"
             screen.fill(black)
-            insert_text(t_model, 1)
+            #insert_text(t_model, 1)
+            blit_text(screen, t_model, (20, 20), font)
             pygame.display.update()
             main(args, 3, cars_model, smallfont, medfont, bigfont, centroid_base, id_key, ct_frame)
             time.sleep(0.1)
         if not(new_22) and old_22 == 1:
             t_model = "Iniciando Modelo Detección de Objetos, por favor espere!"
             screen.fill(black)
-            insert_text(t_model, 1)
+            #insert_text(t_model, 1)
+            blit_text(screen, t_model, (20, 20), font)
             pygame.display.update()
             main(args, 2, model, smallfont, medfont, bigfont, centroid_base, id_key, ct_frame)
             time.sleep(0.1)
         if not(new_17) and old_17 == 1:
             t_model = "Iniciando Modelo Detección de Caras, por favor espere!"
             screen.fill(black)
-            insert_text(t_model, 1)
+            #insert_text(t_model, 1)
+            blit_text(screen, t_model, (20, 20), font)
             pygame.display.update()
             main(args, 1, face_model, smallfont, medfont, bigfont, centroid_base, id_key, ct_frame)
             time.sleep(0.1)
