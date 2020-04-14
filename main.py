@@ -134,9 +134,10 @@ def main(args, opt, model, smallfont, medfont, bigfont, centroid_base, id_key, c
         timestamp = time.monotonic()
         if not(GPIO.input(27)):
             t_menu = "Seleccione Opción:\n 17: Detección de caras\n 22: Detección de Objetos\n 23: Conteo de Autos\n 27: Volver al Menu\n"
-            pygame.display.update()
             screen.fill(black)
-            insert_text(t_menu, 1)
+            #insert_text(t_menu, 1)
+            blit_text(screen, t_menu, (20, 20), smallfont)
+            pygame.display.update()
             break
             
         if args.tflite:
