@@ -62,7 +62,7 @@ logging.getLogger().setLevel(logging.INFO)
 pygame.init()
 screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
 
-capture_manager = PiCameraStream(resolution=(screen.get_width(), screen.get_height()), rotation=180, preview=False)
+capture_manager = PiCameraStream(resolution=(screen.get_width(), screen.get_height()), rotation=90, preview=False)
 #capture_manager = PiCameraStream(resolution=(320, 240), rotation=180, preview=False)
 
 class TFLiteObjectDetection(ObjectDetection):
@@ -104,6 +104,7 @@ def main(args, opt, model, smallfont, medfont, bigfont, centroid_base, id_key, c
     pygame.display.update()
     global last_spoken
     temp_new_cars = 0
+    font = pygame.font.SysFont('Arial', 24)
     
     if opt == 3:
         # Construct connection string
@@ -133,10 +134,10 @@ def main(args, opt, model, smallfont, medfont, bigfont, centroid_base, id_key, c
 
         timestamp = time.monotonic()
         if not(GPIO.input(27)):
-            t_menu = "Seleccione Opción:\n 17: Detección de caras\n 22: Detección de Objetos\n 23: Conteo de Autos\n 27: Volver al Menu\n"
+            t_menu = "Seleccione Opción:\n 1: Detección de caras\n 2: Detección de Objetos\n 3: Conteo de Autos\n 4: Volver al Menu\n"
             screen.fill(black)
             #insert_text(t_menu, 1)
-            blit_text(screen, t_menu, (20, 20), smallfont)
+            blit_text(screen, t_menu, (20, 20), font)
             pygame.display.update()
             break
             
@@ -228,9 +229,10 @@ def main(args, opt, model, smallfont, medfont, bigfont, centroid_base, id_key, c
             print('cantidad autos: '+str(len(centroid_base)))  
             cant_cars = len(centroid_base)
             cartext = "Cantidad de autos nuevos: %0.0f\nCantidad total de Autos: %0.0f " % (new_cars, cant_cars)
-            cartext_surface = smallfont.render(cartext, True, (0, 255, 0))
-            cartext_position = (screen.get_width()//2, screen.get_height()//3) 
-            screen.blit(cartext_surface, cartext_surface.get_rect(center=cartext_position))
+            #cartext_surface = smallfont.render(cartext, True, (0, 255, 0))
+            #cartext_position = (screen.get_width()//2, screen.get_height()//3)
+            #screen.blit(cartext_surface, cartext_surface.get_rect(center=cartext_position))
+            blit_text(screen, cartext, (20, 150), font)
             print('ct_frama: '+str(ct_frame))
             ct_frame = ct_frame + 1  
             conn.commit()          
@@ -343,7 +345,7 @@ def run_process():
     
     capture_manager.start()
     
-    t_menu = "Seleccione Opción:\n 17: Detección de caras\n 22: Detección de Objetos\n 23: Conteo de Autos\n 27: Volver al Menu\n"
+    t_menu = "Seleccione Opción:\n 1: Detección de caras\n 2: Detección de Objetos\n 3: Conteo de Autos\n 4: Volver al Menu\n"
     screen.fill(black)
     #insert_text(t_menu, 1)
     blit_text(screen, t_menu, (20, 20), font)
@@ -355,7 +357,7 @@ def run_process():
         new_22 = GPIO.input(22)
         new_17 = GPIO.input(17)
         if not(new_27) and old_27 == 1:
-            t_menu = "Seleccione Opción:\n 17: Detección de caras\n 22: Detección de Objetos\n 23: Conteo de Autos\n 27: Volver al Menu\n"
+            t_menu = "Seleccione Opción:\n 1: Detección de caras\n 2: Detección de Objetos\n 3: Conteo de Autos\n 4: Volver al Menu\n"
             screen.fill(black)
             #insert_text(t_menu, 1)
             blit_text(screen, t_menu, (20, 20), font)
