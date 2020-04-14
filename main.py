@@ -104,7 +104,7 @@ def main(args, opt, model, smallfont, medfont, bigfont, centroid_base, id_key, c
     pygame.display.update()
     global last_spoken
     temp_new_cars = 0
-    font = pygame.font.SysFont('Arial', 24)
+    font = pygame.font.SysFont('Arial', 20)
     
     if opt == 3:
         # Construct connection string
@@ -232,7 +232,7 @@ def main(args, opt, model, smallfont, medfont, bigfont, centroid_base, id_key, c
             #cartext_surface = smallfont.render(cartext, True, (0, 255, 0))
             #cartext_position = (screen.get_width()//2, screen.get_height()//3)
             #screen.blit(cartext_surface, cartext_surface.get_rect(center=cartext_position))
-            blit_text(screen, cartext, (20, 150), font)
+            blit_text(screen, cartext, (10, 150), font)
             print('ct_frama: '+str(ct_frame))
             ct_frame = ct_frame + 1  
             conn.commit()          
