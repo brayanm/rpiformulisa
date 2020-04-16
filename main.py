@@ -139,7 +139,7 @@ def main(args, opt, model, smallfont, medfont, bigfont, centroid_base, id_key, c
             screen.fill(black)
             #insert_text(t_menu, 1)
             #blit_text(screen, t_menu, (20, 20), font2)
-            blit_text2(screen, t_menu, 0, 200, font2, 24)
+            blit_text2(screen, t_menu, 0, 200, font2, 24, 'white')
             pygame.display.update()
             break
             
@@ -160,7 +160,8 @@ def main(args, opt, model, smallfont, medfont, bigfont, centroid_base, id_key, c
         fpstext = "%0.1f FPS" % (1/delta,)
         fpstext_surface = smallfont.render(fpstext, True, (255, 0, 0))
         fpstext_position = (screen.get_width()-10, 10) # near the top right corner
-        screen.blit(fpstext_surface, fpstext_surface.get_rect(topright=fpstext_position))
+        #screen.blit(fpstext_surface, fpstext_surface.get_rect(topright=fpstext_position))
+        blit_text2(screen, fpstext, 0, screen.get_height()-30, font, 20, 'red')
 
         if opt==3:
             centroid_temp = {}
@@ -235,7 +236,7 @@ def main(args, opt, model, smallfont, medfont, bigfont, centroid_base, id_key, c
             #cartext_position = (screen.get_width()//2, screen.get_height()//3)
             #screen.blit(cartext_surface, cartext_surface.get_rect(center=cartext_position))
             #blit_text(screen, cartext, (10, 150), font)
-            blit_text2(screen, cartext, 0, 40, font, 20)
+            blit_text2(screen, cartext, 0, 40, font, 20, 'white')
             print('ct_frama: '+str(ct_frame))
             ct_frame = ct_frame + 1  
             conn.commit()          
@@ -271,7 +272,8 @@ def main(args, opt, model, smallfont, medfont, bigfont, centroid_base, id_key, c
                     detecttext_surface = detecttextfont.render(detecttext, True, detecttext_color)
                     detecttext_position = (screen.get_width()//2,
                                            screen.get_height() - detecttextfont.size(detecttext)[1])
-                    screen.blit(detecttext_surface, detecttext_surface.get_rect(center=detecttext_position))
+                    #screen.blit(detecttext_surface, detecttext_surface.get_rect(center=detecttext_position))
+                    blit_text2(screen, detecttext, 0, 40, font, 20, 'white')
 
                     if persistant_obj and last_spoken != detecttext:
                         os.system('echo %s | festival --tts & ' % detecttext)
@@ -314,12 +316,12 @@ def blit_text(surface, text, pos, font, color=pygame.Color('white')):
         x = pos[0]  # Reset the x.
         y += word_height  # Start on new row.
         
-def blit_text2(surface, text, x, y, font, font_size):
+def blit_text2(surface, text, x, y, font, font_size, color):
     words = text.split('\n') # 2D array where each row is a list of words.
     max_width, max_height = surface.get_size()
     space = font.size(' ')[0]  # The width of a space.
     for line in words:
-        word_surface2 = font.render(line, True, pygame.Color('white'))
+        word_surface2 = font.render(line, True, pygame.Color(color))
         word_width, word_height = word_surface2.get_size()
         word_surface3 = pygame.transform.rotate(word_surface2, 180)
         new_x = max_width - word_width
@@ -338,7 +340,7 @@ def run_process():
     screen.fill(black)
     #insert_text(t_load_model, 1)
     #blit_text(screen, t_load_model, (20, 20), font)
-    blit_text2(screen, t_load_model, 0, 100, font, 24)
+    blit_text2(screen, t_load_model, 0, 100, font, 24, 'white')
     pygame.display.update()
 
     # use the default font
@@ -365,7 +367,7 @@ def run_process():
     screen.fill(black)
     #insert_text(t_menu, 1)
     #blit_text(screen, t_menu, (20, 20), font)
-    blit_text2(screen, t_menu, 0, 200, font, 24)
+    blit_text2(screen, t_menu, 0, 200, font, 24, 'white')
     pygame.display.update()
 
     while True:  # making a loop
@@ -378,7 +380,7 @@ def run_process():
             screen.fill(black)
             #insert_text(t_menu, 1)
             #blit_text(screen, t_menu, (20, 20), font)
-            blit_text2(screen, t_menu, 0, 200, font, 24)
+            blit_text2(screen, t_menu, 0, 200, font, 24, 'white')
             pygame.display.update()
             time.sleep(0.1)
         if not(new_23) and old_23 == 1:
@@ -386,7 +388,7 @@ def run_process():
             screen.fill(black)
             #insert_text(t_model, 1)
             #blit_text(screen, t_model, (20, 20), font)
-            blit_text2(screen, t_model, 0, 100, font, 24)
+            blit_text2(screen, t_model, 0, 100, font, 24, 'white')
             pygame.display.update()
             main(args, 3, cars_model, smallfont, medfont, bigfont, centroid_base, id_key, ct_frame)
             time.sleep(0.1)
@@ -395,7 +397,7 @@ def run_process():
             screen.fill(black)
             #insert_text(t_model, 1)
             #blit_text(screen, t_model, (20, 20), font)
-            blit_text2(screen, t_model, 0, 100, font, 24)
+            blit_text2(screen, t_model, 0, 100, font, 24, 'white')
             pygame.display.update()
             main(args, 2, model, smallfont, medfont, bigfont, centroid_base, id_key, ct_frame)
             time.sleep(0.1)
@@ -404,7 +406,7 @@ def run_process():
             screen.fill(black)
             #insert_text(t_model, 1)
             #blit_text(screen, t_model, (20, 20), font)
-            blit_text2(screen, t_model, 0, 100, font, 24)
+            blit_text2(screen, t_model, 0, 100, font, 24, 'white')
             pygame.display.update()
             main(args, 1, face_model, smallfont, medfont, bigfont, centroid_base, id_key, ct_frame)
             time.sleep(0.1)
