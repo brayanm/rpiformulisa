@@ -273,7 +273,7 @@ def main(args, opt, model, smallfont, medfont, bigfont, centroid_base, id_key, c
                     detecttext_position = (screen.get_width()//2,
                                            screen.get_height() - detecttextfont.size(detecttext)[1])
                     #screen.blit(detecttext_surface, detecttext_surface.get_rect(center=detecttext_position))
-                    blit_text2(screen, detecttext, 0, 40, font, 20, 'red')
+                    blit_text2(screen, detecttext, 0, 40, font, 20, 'white')
 
                     if persistant_obj and last_spoken != detecttext:
                         os.system('echo %s | festival --tts & ' % detecttext)
