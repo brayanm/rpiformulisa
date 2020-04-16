@@ -62,7 +62,7 @@ logging.getLogger().setLevel(logging.INFO)
 pygame.init()
 screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
 
-capture_manager = PiCameraStream(resolution=(screen.get_width(), screen.get_height()), rotation=0, preview=False)
+capture_manager = PiCameraStream(resolution=(screen.get_width(), screen.get_height()), rotation=90, preview=False)
 #capture_manager = PiCameraStream(resolution=(320, 240), rotation=180, preview=False)
 
 class TFLiteObjectDetection(ObjectDetection):
