@@ -18,10 +18,10 @@ import mysql.connector
 from mysql.connector import errorcode
 import datetime   
 
-MODEL_FILENAME_face = 'includes/model_face.tflite'
-LABELS_FILENAME_face = 'includes/labels_face.txt'
-MODEL_FILENAME_cars = 'includes/model_cars.tflite'
-LABELS_FILENAME_cars = 'includes/labels_cars.txt'
+MODEL_FILENAME_face = '/home/pi/Documents/rpiformulisa/includes/model_face.tflite'
+LABELS_FILENAME_face = '/home/pi/Documents/rpiformulisa/includes/labels_face.txt'
+MODEL_FILENAME_cars = '/home/pi/Documents/rpiformulisa/includes/model_cars.tflite'
+LABELS_FILENAME_cars = '/home/pi/Documents/rpiformulisa/includes/labels_cars.txt'
 
 # Obtain connection string information from the portal
 config = {
