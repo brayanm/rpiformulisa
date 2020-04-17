@@ -68,7 +68,7 @@ class MobileNetV2Base():
                 logger.info('Wrote {}'.format(output_dir + output_filename))
         return tflite_model
 
-    def init_tflite_interpreter(self, model_path='includes/mobilenet_v2_imagenet.tflite'):
+    def init_tflite_interpreter(self, model_path='/home/pi/Documents/rpiformulisa/includes/mobilenet_v2_imagenet.tflite'):
         '''
             https://www.tensorflow.org/versions/r2.0/api_docs/python/tf/lite/Interpreter
             This makes the TensorFlow Lite interpreter accessible in Python. 
