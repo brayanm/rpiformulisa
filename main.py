@@ -100,7 +100,7 @@ def parse_args():
 last_seen = [None] * 10
 last_spoken = None
 
-def main(args, opt, model, smallfont, medfont, bigfont, centroid_base, id_key, ct_frame):
+def main(opt, model, smallfont, medfont, bigfont, centroid_base, id_key, ct_frame):
     pygame.display.update()
     global last_spoken
     temp_new_cars = 0
@@ -143,17 +143,14 @@ def main(args, opt, model, smallfont, medfont, bigfont, centroid_base, id_key, c
             pygame.display.update()
             break
             
-        if args.tflite:
-            if opt == 1 or opt == 3:
-                img2 = Image.fromarray(frame)
-                prediction = model.predict_image(img2)
-            if opt == 2:
-                prediction = model.tflite_predict(frame)[0]
-        else:
-            prediction = model.predict(frame)[0]
+        if opt == 1 or opt == 3:
+            img2 = Image.fromarray(frame)
+            prediction = model.predict_image(img2)
+        if opt == 2:
+            prediction = model.tflite_predict(frame)[0]
         logging.info(prediction)
         delta = time.monotonic() - timestamp
-        logging.info("%s inference took %d ms, %0.1f FPS" % ("TFLite" if args.tflite else "TF", delta * 1000, 1 / delta))
+        logging.info("%s inference took %d ms, %0.1f FPS" % ("TFLite", delta * 1000, 1 / delta))
         print(last_seen)
 
         # add FPS on top corner of image
@@ -359,7 +356,8 @@ def run_process():
     cars_model = TFLiteObjectDetection(MODEL_FILENAME_cars, labels_cars)
     
     #model objects
-    model = MobileNetV2Base(include_top=args.include_top)
+    #model = MobileNetV2Base(include_top=args.include_top)
+    model = MobileNetV2Base(include_top=True)
     
     capture_manager.start()
     
@@ -390,7 +388,7 @@ def run_process():
             #blit_text(screen, t_model, (20, 20), font)
             blit_text2(screen, t_model, 0, 100, font, 24, 'white')
             pygame.display.update()
-            main(args, 3, cars_model, smallfont, medfont, bigfont, centroid_base, id_key, ct_frame)
+            main(3, cars_model, smallfont, medfont, bigfont, centroid_base, id_key, ct_frame)
             time.sleep(0.1)
         if not(new_22) and old_22 == 1:
             t_model = "Iniciando Modelo Detección de\nObjetos, por favor espere!"
@@ -399,7 +397,7 @@ def run_process():
             #blit_text(screen, t_model, (20, 20), font)
             blit_text2(screen, t_model, 0, 100, font, 24, 'white')
             pygame.display.update()
-            main(args, 2, model, smallfont, medfont, bigfont, centroid_base, id_key, ct_frame)
+            main(2, model, smallfont, medfont, bigfont, centroid_base, id_key, ct_frame)
             time.sleep(0.1)
         if not(new_17) and old_17 == 1:
             t_model = "Iniciando Modelo Detección de\nCaras, por favor espere!"
@@ -408,7 +406,7 @@ def run_process():
             #blit_text(screen, t_model, (20, 20), font)
             blit_text2(screen, t_model, 0, 100, font, 24, 'white')
             pygame.display.update()
-            main(args, 1, face_model, smallfont, medfont, bigfont, centroid_base, id_key, ct_frame)
+            main(1, face_model, smallfont, medfont, bigfont, centroid_base, id_key, ct_frame)
             time.sleep(0.1)
         old_27 = new_27
         old_23 = new_23
@@ -418,7 +416,7 @@ def run_process():
     
 
 if __name__ == "__main__":
-    args = parse_args()
+    #args = parse_args()
     try:
         #main(args)
         run_process()
