@@ -89,7 +89,7 @@ last_spoken = None
 
 
 
-def main(args, opt, model, smallfont, medfont, bigfont, centroid_base, id_key, ct_frame):
+def main(opt, model, smallfont, medfont, bigfont, centroid_base, id_key, ct_frame):
     global last_spoken
     temp_new_cars = 0
     
@@ -120,14 +120,11 @@ def main(args, opt, model, smallfont, medfont, bigfont, centroid_base, id_key, c
         #screen.blit(img, (0, 0))
 
         timestamp = time.monotonic()
-        if args.tflite:
-            if opt == 1 or opt==3:
-                img2 = Image.fromarray(frame)
-                prediction = model.predict_image(img2)
-            if opt == 2:
-                prediction = model.tflite_predict(frame)[0]
-        else:
-            prediction = model.predict(frame)[0]
+        if opt == 1 or opt==3:
+            img2 = Image.fromarray(frame)
+            prediction = model.predict_image(img2)
+        if opt == 2:
+            prediction = model.tflite_predict(frame)[0]
         logging.info(prediction)
         delta = time.monotonic() - timestamp
         logging.info("%s inference took %d ms, %0.1f FPS" % ("TFLite" if args.tflite else "TF", delta * 1000, 1 / delta))
@@ -301,7 +298,7 @@ def run_process():
     with open(LABELS_FILENAME_cars, 'r') as f:
         labels_cars = [l.strip() for l in f.readlines()]
     cars_model = TFLiteObjectDetection(MODEL_FILENAME_cars, labels_cars)
-    model = MobileNetV2Base(include_top=args.include_top)
+    model = MobileNetV2Base(include_top=True)
     
     capture_manager.start()
     
@@ -313,15 +310,15 @@ def run_process():
         new_switch_z = keyboard.is_pressed('z')
         if new_switch_q==True and old_switch_q==False:  # if key 'q' is pressed 
             print('Iniciando Modelo Deteccion de Caras, por favor espere!')
-            main(args, 1, face_model, smallfont, medfont, bigfont, centroid_base, id_key, ct_frame)
+            main(1, face_model, smallfont, medfont, bigfont, centroid_base, id_key, ct_frame)
             time.sleep(0.1)
         if new_switch_a==True and old_switch_a==False:  # if key 'q' is pressed 
             print('Iniciando Modelo Deteccion de OBjetos, por favor espere!')
-            main(args, 2, model, smallfont, medfont, bigfont, centroid_base, id_key, ct_frame)
+            main(2, model, smallfont, medfont, bigfont, centroid_base, id_key, ct_frame)
             time.sleep(0.1)
         if new_switch_z==True and old_switch_z==False:  # if key 'q' is pressed 
             print('Iniciando Modelo Deteccion de autos, por favor espere!')
-            main(args, 3, cars_model, smallfont, medfont, bigfont, centroid_base, id_key, ct_frame)
+            main(3, cars_model, smallfont, medfont, bigfont, centroid_base, id_key, ct_frame)
             time.sleep(0.1)
         old_switch_q = new_switch_q
         old_switch_a = new_switch_a
@@ -329,7 +326,7 @@ def run_process():
     
 
 if __name__ == "__main__":
-    args = parse_args()
+    #args = parse_args()
     try:
         #main(args)
         run_process()
